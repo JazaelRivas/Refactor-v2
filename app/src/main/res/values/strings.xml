@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ToDo</string>
+    <string name="titulo">Titulo</string>
+    <string name="descripcion">Descripcion</string>
+    <string name="tarea">Tarea</string>
+    <string name="fecha_de_termino">Fecha de termino</string>
+    <string name="hora_de_termino">Hora de termino</string>
+</resources>
