@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.presentation.createTask
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -7,11 +7,11 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.example.myapplication.MainActivity.Companion.NEW_TASK
-import com.example.myapplication.MainActivity.Companion.NEW_TASK_KEY
+import com.example.myapplication.R
+import com.example.myapplication.presentation.main.MainActivity.Companion.NEW_TASK
+import com.example.myapplication.presentation.main.MainActivity.Companion.NEW_TASK_KEY
+import com.example.myapplication.data.util.Task
 import com.google.android.material.textfield.TextInputEditText
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -25,13 +25,25 @@ class CreateTaskActivity : AppCompatActivity() {
     private lateinit var Date: TextInputEditText
     private lateinit var Time: TextInputEditText
     private lateinit var CreateBtn: Button
+    private var isDetalle: Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_task)
 
+        isDetalle = intent.getBooleanExtra("isTaskDetail", false)
         initViews()
+        if(isDetalle) setTaskInfo(intent.getParcelableExtra("task") ?: Task())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setTaskInfo(task: Task) {
+        Title.setText(task.titulo)
+        Time.setText(task.date.format(DateTimeFormatter.ofPattern("HH:mm")))
+        CreateBtn.text = "Update"
+        Description.setText(task.desc)
+        Date.setText(task.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -79,9 +91,9 @@ class CreateTaskActivity : AppCompatActivity() {
                     Intent().putExtra(
                         NEW_TASK_KEY,
                         Task(
-                            Title.text.toString(),
-                            Description.text.toString(),
-                            LocalDateTime.of(
+                            titulo = Title.text.toString(),
+                            desc = Description.text.toString(),
+                            date = LocalDateTime.of(
                                 LocalDate.parse(
                                     Date.text,
                                     DateTimeFormatter.ofPattern("yyyy/MM/dd")
